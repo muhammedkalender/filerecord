@@ -12,8 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/file-record")
@@ -24,13 +26,13 @@ public class FileRecordController {
 
     @GetMapping
     public List<FileRecordResponse> list() {
-        throw new NotImplementedException();
+        return this.fileRecordService.list().stream().map((record) -> this.modelMapper.map(record, FileRecordResponse.class)).collect(Collectors.toList());
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public FileRecordResponse createFileRecord(@Validated CreateFileRecordRequest createFileRecordRequest) {
-        throw new NotImplementedException();
+    public FileRecordResponse createFileRecord(@Validated CreateFileRecordRequest createFileRecordRequest) throws IOException {
+        return this.modelMapper.map(this.fileRecordService.create(createFileRecordRequest), FileRecordResponse.class);
     }
 
     @PutMapping(path = "{fileRecordId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
