@@ -1,4 +1,4 @@
-package dev.siyah.filemanager.service;
+package dev.siyah.filemanager.service.file;
 
 import dev.siyah.filemanager.entity.FileRecord;
 import dev.siyah.filemanager.model.request.file.CreateFileRecordRequest;

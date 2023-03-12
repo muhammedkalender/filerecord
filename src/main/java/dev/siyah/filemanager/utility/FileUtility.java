@@ -8,8 +8,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 public class FileUtility {
+    /**
+     * @param filename String
+     * @return String ( Fallback value is empty string )
+     * @see <a href="https://www.baeldung.com/java-file-extension">Baeldung - How to Get the File Extension of a File in Java</a>
+     */
+    public static String getExtensionByFileName(String filename) {
+        return Optional.ofNullable(filename)
+                .filter(f -> f.contains("."))
+                .map(f -> f.substring(filename.lastIndexOf(".") + 1))
+                .orElse("");
+    }
+
     public static void saveMultipartAsFile(String path, MultipartFile file) throws IOException {
         File saveFile = new File(path);
 

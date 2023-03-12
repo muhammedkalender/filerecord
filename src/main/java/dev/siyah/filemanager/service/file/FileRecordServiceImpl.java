@@ -1,4 +1,4 @@
-package dev.siyah.filemanager.service.impl;
+package dev.siyah.filemanager.service.file;
 
 import dev.siyah.filemanager.entity.FileRecord;
 import dev.siyah.filemanager.exception.FileDeleteException;
@@ -7,7 +7,7 @@ import dev.siyah.filemanager.model.request.file.CreateFileRecordRequest;
 import dev.siyah.filemanager.model.request.file.UpdateFileRecordRequest;
 import dev.siyah.filemanager.properties.FileRecordProperties;
 import dev.siyah.filemanager.repository.FileRecordRepository;
-import dev.siyah.filemanager.service.FileRecordService;
+import dev.siyah.filemanager.service.file.FileRecordService;
 import dev.siyah.filemanager.utility.FileUtility;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
