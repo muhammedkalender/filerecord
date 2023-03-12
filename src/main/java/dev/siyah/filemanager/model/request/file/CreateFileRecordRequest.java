@@ -1,6 +1,8 @@
 package dev.siyah.filemanager.model.request.file;
 
 import dev.siyah.filemanager.enums.FileExtension;
+import dev.siyah.filemanager.validation.file.extension.FileExtensionValidation;
+import dev.siyah.filemanager.validation.file.size.FileSizeValidation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,5 +24,7 @@ public class CreateFileRecordRequest {
     @NotNull
     private FileExtension extension;
 
+    @FileSizeValidation
+    @FileExtensionValidation
     private MultipartFile file;
 }
