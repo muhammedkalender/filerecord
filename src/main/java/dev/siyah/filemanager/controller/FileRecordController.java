@@ -42,17 +42,18 @@ public class FileRecordController {
 
     @GetMapping("{fileRecordId}")
     public FileRecordResponse getFileRecordById(@PathVariable UUID fileRecordId) {
-        throw new NotImplementedException();
+        return this.modelMapper.map(this.fileRecordService.getById(fileRecordId),
+                FileRecordResponse.class);
     }
 
     @DeleteMapping("{fileRecordId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public boolean deleteFileRecordById(@PathVariable UUID fileRecordId) {
-        throw new NotImplementedException();
+    public void deleteFileRecordById(@PathVariable UUID fileRecordId) {
+        this.fileRecordService.deleteById(fileRecordId);
     }
 
     @GetMapping("{fileRecordId}/download")
-    public byte[] downloadFileRecord(@PathVariable UUID fileRecordId) {
-        throw new NotImplementedException();
+    public byte[] downloadFileRecord(@PathVariable UUID fileRecordId) throws IOException {
+        return this.fileRecordService.downloadById(fileRecordId);
     }
 }

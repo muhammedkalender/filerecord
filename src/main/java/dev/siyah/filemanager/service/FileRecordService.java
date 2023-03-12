@@ -20,5 +20,5 @@ public interface FileRecordService {
 
     void deleteById(UUID fileRecordId);
 
-    byte[] downloadById(UUID fileRecordId) throws EntityNotFoundException;
+    byte[] downloadById(UUID fileRecordId) throws EntityNotFoundException, IOException;
 }

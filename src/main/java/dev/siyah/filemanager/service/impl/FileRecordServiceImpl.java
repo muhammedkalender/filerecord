@@ -3,7 +3,6 @@ package dev.siyah.filemanager.service.impl;
 import dev.siyah.filemanager.entity.FileRecord;
 import dev.siyah.filemanager.exception.FileDeleteException;
 import dev.siyah.filemanager.exception.FileMoveException;
-import dev.siyah.filemanager.exception.FileSaveException;
 import dev.siyah.filemanager.model.request.file.CreateFileRecordRequest;
 import dev.siyah.filemanager.model.request.file.UpdateFileRecordRequest;
 import dev.siyah.filemanager.properties.FileRecordProperties;
@@ -13,11 +12,12 @@ import dev.siyah.filemanager.utility.FileUtility;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,7 +41,7 @@ public class FileRecordServiceImpl implements FileRecordService {
         fileRecord.setSizeInKB(createFileRecordRequest.getFile().getSize());
         fileRecord.setPath(this.getPathWithoutPrefix(fileRecord));
 
-        this.saveAsFile(fileRecord.getPath(), createFileRecordRequest.getFile());
+        FileUtility.saveMultipartAsFile(this.addPrefixToPath(fileRecord.getPath()), createFileRecordRequest.getFile());
 
         return fileRecordRepository.save(fileRecord);
     }
@@ -69,7 +69,7 @@ public class FileRecordServiceImpl implements FileRecordService {
                 throw new FileDeleteException();
             }
 
-            this.saveAsFile(fileRecord.getPath(), updateFileRecordRequest.getFile());
+            FileUtility.saveMultipartAsFile(this.addPrefixToPath(fileRecord.getPath()), updateFileRecordRequest.getFile());
         } else {
             if (!FileUtility.move(this.addPrefixToPath(oldFilePath), this.addPrefixToPath(fileRecord.getPath()))) {
                 throw new FileMoveException();
@@ -85,31 +85,28 @@ public class FileRecordServiceImpl implements FileRecordService {
 
     @Override
     public FileRecord getById(UUID fileRecordId) throws EntityNotFoundException {
-        return null;
+        return fileRecordRepository.findById(fileRecordId).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public void deleteById(UUID fileRecordId) {
+        FileRecord fileRecord = this.getById(fileRecordId);
 
+        if (fileRecord != null) {
+            if (!FileUtility.deleteFileParentIfExists(this.addPrefixToPath(fileRecord.getPath()))) {
+                throw new FileDeleteException();
+            }
+
+            fileRecord.setDeletedAt(LocalDateTime.now());
+            this.fileRecordRepository.save(fileRecord);
+        }
     }
 
     @Override
-    public byte[] downloadById(UUID fileRecordId) throws EntityNotFoundException {
-        return new byte[0];
-    }
+    public byte[] downloadById(UUID fileRecordId) throws EntityNotFoundException, IOException {
+        FileRecord fileRecord = this.getById(fileRecordId);
 
-    private void saveAsFile(String path, MultipartFile file) throws IOException {
-        File saveFile = new File(this.addPrefixToPath(path));
-
-        if (!saveFile.getParentFile().exists()) {
-            boolean createFolderResult = saveFile.mkdirs();
-
-            if (!createFolderResult) {
-                throw new FileSaveException();
-            }
-        }
-
-        file.transferTo(saveFile);
+        return Files.readAllBytes(Paths.get(this.addPrefixToPath(fileRecord.getPath())));
     }
 
     private String addPrefixToPath(String filePath) {
