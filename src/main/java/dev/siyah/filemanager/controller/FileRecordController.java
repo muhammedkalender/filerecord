@@ -36,8 +36,8 @@ public class FileRecordController {
     }
 
     @PutMapping(path = "{fileRecordId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public FileRecordResponse editFileRecord(@PathVariable UUID fileRecordId, @Validated UpdateFileRecordRequest updateFileRecordRequest) {
-        throw new NotImplementedException();
+    public FileRecordResponse updateFileRecord(@PathVariable UUID fileRecordId, @Validated UpdateFileRecordRequest updateFileRecordRequest) throws IOException {
+        return this.modelMapper.map(this.fileRecordService.update(fileRecordId, updateFileRecordRequest), FileRecordResponse.class);
     }
 
     @GetMapping("{fileRecordId}")

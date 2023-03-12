@@ -14,7 +14,7 @@ public interface FileRecordService {
 
     FileRecord create(CreateFileRecordRequest createFileRecordRequest) throws IOException;
 
-    FileRecord update(UUID fileRecordId, UpdateFileRecordRequest updateFileRecordRequest) throws EntityNotFoundException;
+    FileRecord update(UUID fileRecordId, UpdateFileRecordRequest updateFileRecordRequest) throws EntityNotFoundException, IOException;
 
     FileRecord getById(UUID fileRecordId) throws EntityNotFoundException;
 
