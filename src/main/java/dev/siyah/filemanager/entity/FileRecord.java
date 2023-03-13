@@ -2,6 +2,7 @@ package dev.siyah.filemanager.entity;
 
 import dev.siyah.filemanager.enums.FileExtension;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @Data
 @EntityListeners(AuditingEntityListener.class)
 @Where(clause = "deleted_at IS NULL")
+@Builder
 public class FileRecord {
     @Id
     @Type(type = "pg-uuid")
