@@ -69,7 +69,7 @@ public class FileSizeValidatorTest {
                 "file",
                 "hello.jpg",
                 MediaType.TEXT_PLAIN_VALUE,
-                RandomStringUtils.randomGraph(300000).getBytes()
+                RandomStringUtils.randomGraph(30000000).getBytes()
         );
 
         assertFalse(this.fileSizeValidator.validate(multipartFile, null));
