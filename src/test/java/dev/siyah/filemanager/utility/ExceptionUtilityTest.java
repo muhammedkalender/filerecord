@@ -22,6 +22,6 @@ public class ExceptionUtilityTest {
                 HttpStatus.OK
         );
 
-        Assert.assertEquals(actual, excepted);
+        assertEquals(actual, excepted);
     }
 }

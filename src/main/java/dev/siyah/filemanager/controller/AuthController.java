@@ -79,10 +79,14 @@ public class AuthController {
     public void logout() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(authentication.isAuthenticated()){
-            MemberDetail memberDetail = (MemberDetail) authentication.getPrincipal();
+        if (authentication.isAuthenticated()) {
+            try {
+                MemberDetail memberDetail = (MemberDetail) authentication.getPrincipal();
 
-            refreshTokenService.deleteByMemberId(memberDetail.getId());
+                refreshTokenService.deleteByMemberId(memberDetail.getId());
+            } catch (Exception ignored) {
+
+            }
         }
     }
 

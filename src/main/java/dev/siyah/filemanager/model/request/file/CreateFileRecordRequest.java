@@ -1,5 +1,7 @@
 package dev.siyah.filemanager.model.request.file;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import dev.siyah.filemanager.enums.FileExtension;
 import dev.siyah.filemanager.validation.file.extension.FileExtensionValidation;
 import dev.siyah.filemanager.validation.file.size.FileSizeValidation;
@@ -15,6 +17,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateFileRecordRequest {
     @NotNull
     @NotEmpty
@@ -24,7 +27,8 @@ public class CreateFileRecordRequest {
     @NotNull
     private FileExtension extension;
 
+    @NotNull
     @FileSizeValidation
     @FileExtensionValidation
-    private MultipartFile file;
+    private MultipartFile file = null;
 }

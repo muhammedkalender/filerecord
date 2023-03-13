@@ -68,7 +68,7 @@ public class FileRecordServiceImpl implements FileRecordService {
             }
 
             this.fileUtility.saveMultipartAsFile(this.addPrefixToPath(fileRecord.getPath()), updateFileRecordRequest.getFile());
-        } else {
+        } else if (!oldFilePath.equals(fileRecord.getPath())) {
             if (!this.fileUtility.move(this.addPrefixToPath(oldFilePath), this.addPrefixToPath(fileRecord.getPath()))) {
                 throw new FileMoveException();
             }

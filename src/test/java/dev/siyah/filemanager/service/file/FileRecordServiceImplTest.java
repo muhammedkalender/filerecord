@@ -27,6 +27,7 @@ import java.util.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertThrows;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class FileRecordServiceImplTest {
@@ -60,7 +61,7 @@ public class FileRecordServiceImplTest {
         when(fileRecordRepository.findAll())
                 .thenReturn(new ArrayList<>());
 
-        Assert.assertEquals(this.fileRecordService.list().size(), 0);
+        assertEquals(this.fileRecordService.list().size(), 0);
     }
 
     @Test
@@ -70,8 +71,8 @@ public class FileRecordServiceImplTest {
         when(fileRecordRepository.findAll())
                 .thenReturn(Collections.singletonList(exampleRecord));
 
-        Assert.assertEquals(this.fileRecordService.list().size(), 1);
-        Assert.assertEquals(this.fileRecordService.list().stream().findFirst().get().getId(), exampleRecord.getId());
+        assertEquals(this.fileRecordService.list().size(), 1);
+        assertEquals(this.fileRecordService.list().stream().findFirst().get().getId(), exampleRecord.getId());
     }
 
     @Test
@@ -95,7 +96,7 @@ public class FileRecordServiceImplTest {
         actual.setId(excepted.getId());
 
         verify(this.fileUtility, times(1)).saveMultipartAsFile(any(), any());
-        Assert.assertEquals(actual, excepted);
+        assertEquals(actual, excepted);
     }
 
     @Test
@@ -105,7 +106,7 @@ public class FileRecordServiceImplTest {
         when(this.fileRecordRepository.findById(uuid))
                 .thenReturn(Optional.empty());
 
-        Assert.assertThrows(EntityNotFoundException.class, () ->
+        assertThrows(EntityNotFoundException.class, () ->
                 this.fileRecordService.update(uuid, null)
         );
     }
@@ -176,10 +177,10 @@ public class FileRecordServiceImplTest {
         verify(this.fileUtility, atLeastOnce()).deleteFileIfExists(any());
         verify(this.fileUtility, atLeastOnce()).saveMultipartAsFile(any(), any());
 
-        Assert.assertEquals(this.actualFileRecord.getName(), updateFileRecordRequest.getName());
-        Assert.assertEquals(this.actualFileRecord.getExtension(), updateFileRecordRequest.getExtension());
-        Assert.assertEquals(this.actualFileRecord.getPath(), compareObject.getPath());
-        Assert.assertEquals(this.actualFileRecord.getSizeInKB(), 6);
+        assertEquals(this.actualFileRecord.getName(), updateFileRecordRequest.getName());
+        assertEquals(this.actualFileRecord.getExtension(), updateFileRecordRequest.getExtension());
+        assertEquals(this.actualFileRecord.getPath(), compareObject.getPath());
+        assertEquals(this.actualFileRecord.getSizeInKB(), 6);
     }
 
     @Test
@@ -188,7 +189,7 @@ public class FileRecordServiceImplTest {
 
         when(this.fileRecordRepository.findById(any())).thenReturn(Optional.of(fileRecord));
 
-        Assert.assertEquals(this.fileRecordService.getById(UUID.randomUUID()), fileRecord);
+        assertEquals(this.fileRecordService.getById(UUID.randomUUID()), fileRecord);
     }
 
     @Test
@@ -220,7 +221,7 @@ public class FileRecordServiceImplTest {
         when(this.fileRecordRepository.findById(id)).thenReturn(Optional.of(fileRecord));
         when(this.fileUtility.readByPath(this.addPrefixToPath(fileRecord.getPath()))).thenReturn(excepted);
 
-        Assert.assertEquals(this.fileRecordService.downloadById(id), excepted);
+        assertEquals(this.fileRecordService.downloadById(id), excepted);
     }
 
     @Test
@@ -237,7 +238,7 @@ public class FileRecordServiceImplTest {
 
     @Test
     public void testDownloadById_WhenWrongId() {
-        Assert.assertThrows(EntityNotFoundException.class, () -> this.fileRecordService.downloadById(UUID.randomUUID()));
+        assertThrows(EntityNotFoundException.class, () -> this.fileRecordService.downloadById(UUID.randomUUID()));
     }
 
     private String addPrefixToPath(String filePath) {

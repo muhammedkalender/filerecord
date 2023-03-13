@@ -8,6 +8,9 @@ import org.testng.annotations.Test;
 
 import java.util.UUID;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertThrows;
+
 public class JwtUtilityTest {
     private JWTProperties jwtProperties;
     private JwtUtility jwtUtility;
@@ -35,14 +38,14 @@ public class JwtUtilityTest {
     public void testGenerateToken() {
         String token = this.jwtUtility.generateToken(this.memberDetail);
 
-        Assert.assertEquals(this.jwtUtility.extractUsername(token), this.memberDetail.getUsername());
+        assertEquals(this.jwtUtility.extractUsername(token), this.memberDetail.getUsername());
     }
 
     @Test
     public void testCreateToken() {
         String token = this.jwtUtility.generateToken(this.memberDetail);
 
-        Assert.assertEquals(this.jwtUtility.extractUsername(token), this.memberDetail.getUsername());
+        assertEquals(this.jwtUtility.extractUsername(token), this.memberDetail.getUsername());
     }
 
     @Test
@@ -61,14 +64,14 @@ public class JwtUtilityTest {
     public void testExtractUsername() {
         String token = this.jwtUtility.generateToken(this.memberDetail);
 
-        Assert.assertEquals(this.jwtUtility.extractUsername(token), "admin");
+        assertEquals(this.jwtUtility.extractUsername(token), "admin");
     }
 
     @Test
     public void testExtractUsername_WhenExpiredToken() {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY3ODY3MTQ1NCwiZXhwIjoxNjc4NjcxNDU1fQ.QyolymuqVewPmYDEtegc0eTk1ULIltWlASsWY_VJmrg";
 
-        Assert.assertThrows(() ->
+        assertThrows(() ->
                 this.jwtUtility.extractUsername(token)
         );
     }

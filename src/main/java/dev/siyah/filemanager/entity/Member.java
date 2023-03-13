@@ -1,7 +1,9 @@
 package dev.siyah.filemanager.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
@@ -14,6 +16,8 @@ import java.util.UUID;
 @Table(name = "T_MEMBER")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
     @Id
     @Type(type = "pg-uuid")

@@ -4,6 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import static org.testng.Assert.assertEquals;
+
 public class FileUtilityTest {
     private FileUtility fileUtility;
 
@@ -17,7 +19,7 @@ public class FileUtilityTest {
        String actual = this.fileUtility.getExtensionByFileName("test.png");
        String excepted = "png";
 
-        Assert.assertEquals(actual, excepted);
+        assertEquals(actual, excepted);
     }
 
     @Test
@@ -25,6 +27,6 @@ public class FileUtilityTest {
         String actual = this.fileUtility.getExtensionByFileName("test");
         String excepted = "";
 
-        Assert.assertEquals(actual, excepted);
+        assertEquals(actual, excepted);
     }
 }

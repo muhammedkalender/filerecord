@@ -30,7 +30,7 @@ public class FileSizeValidatorTest {
     public void testValidate_WhenNullFile() {
         this.fileSizeValidator.initialize(createInterfaceObject(10));
 
-        Assert.assertTrue(this.fileSizeValidator.validate(null, null));
+        assertTrue(this.fileSizeValidator.validate(null, null));
     }
 
     @Test
@@ -44,7 +44,7 @@ public class FileSizeValidatorTest {
                 "Hello, World!".getBytes()
         );
 
-        Assert.assertTrue(this.fileSizeValidator.validate(multipartFile, null));
+        assertTrue(this.fileSizeValidator.validate(multipartFile, null));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class FileSizeValidatorTest {
                 "Hello, World!".getBytes()
         );
 
-        Assert.assertTrue(this.fileSizeValidator.validate(multipartFile, null));
+        assertTrue(this.fileSizeValidator.validate(multipartFile, null));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class FileSizeValidatorTest {
                 RandomStringUtils.randomGraph(300000).getBytes()
         );
 
-        Assert.assertFalse(this.fileSizeValidator.validate(multipartFile, null));
+        assertFalse(this.fileSizeValidator.validate(multipartFile, null));
     }
 
     private FileSizeValidation createInterfaceObject(long allowedMaximumFileSize){

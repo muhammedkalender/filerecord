@@ -23,7 +23,7 @@ public class FileSizeValidator extends ValidationAbstraction<FileSizeValidation,
             return true;
         }
 
-        return payload.getSize() / 1024 <= this.allowedMaxFileSize;
+        return payload.getSize() / 1024 / 1024 <= this.allowedMaxFileSize;
     }
 }
 

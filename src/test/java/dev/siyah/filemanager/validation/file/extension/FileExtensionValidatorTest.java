@@ -14,6 +14,8 @@ import javax.validation.Payload;
 
 import java.lang.annotation.Annotation;
 
+import static org.testng.Assert.assertTrue;
+
 
 @RunWith(SpringRunner.class)
 @Test
@@ -41,7 +43,7 @@ public class FileExtensionValidatorTest {
 
 
         boolean actual = this.fileExtensionValidator.validate(this.multipartFile, null);
-        Assert.assertTrue(actual);
+        assertTrue(actual);
     }
 
     @Test
@@ -57,7 +59,7 @@ public class FileExtensionValidatorTest {
         this.fileExtensionValidator.initialize(this.createInterfaceObject(new FileExtension[]{FileExtension.JPG, FileExtension.XLSX}));
 
         boolean actual = this.fileExtensionValidator.validate(this.multipartFile, null);
-        Assert.assertTrue(actual);
+        assertTrue(actual);
     }
 
     @Test
@@ -66,7 +68,7 @@ public class FileExtensionValidatorTest {
         validator.initialize(this.createInterfaceObject(new FileExtension[]{FileExtension.JPG, FileExtension.XLSX}));
 
         boolean actual = validator.validate(null, null);
-        Assert.assertTrue(actual);
+        assertTrue(actual);
     }
 
     private FileExtensionValidation createInterfaceObject(FileExtension[] fileExtensions) {

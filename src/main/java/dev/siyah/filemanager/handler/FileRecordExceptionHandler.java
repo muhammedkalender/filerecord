@@ -4,6 +4,7 @@ import dev.siyah.filemanager.exception.FileDeleteException;
 import dev.siyah.filemanager.exception.FileMoveException;
 import dev.siyah.filemanager.exception.FileSaveException;
 import dev.siyah.filemanager.utility.ExceptionUtility;
+import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +27,17 @@ public class FileRecordExceptionHandler {
                 .getAllErrors()
                 .forEach((error) -> {
                     String fieldName = ((FieldError) error).getField();
-                    String errorMessage = error.getDefaultMessage();
+
+                    boolean invalid = Arrays.stream(error.getCodes()).anyMatch(o -> o.equals("typeMismatch"));
+
+                    String errorMessage;
+
+                    if (invalid) {
+                        errorMessage = "Wrong data type";
+                    } else {
+                        errorMessage = error.getDefaultMessage();
+                    }
+
                     errors.put(fieldName,
                             errorMessage);
                 });
@@ -36,6 +48,14 @@ public class FileRecordExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleIllegalArgumentExceptions(IllegalArgumentException ignored) {
         return ExceptionUtility.createExceptionResponse(HttpStatus.BAD_REQUEST, "Some variables not allowed");
+    }
+
+    @ExceptionHandler(ConversionNotSupportedException.class)
+    public ResponseEntity<?> handleConversionNotSupportedExceptions(ConversionNotSupportedException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put(ex.getPropertyName(), "This data not valid");
+
+        return ExceptionUtility.createExceptionResponse(HttpStatus.BAD_REQUEST, errors);
     }
 
     @ExceptionHandler(FileMoveException.class)
