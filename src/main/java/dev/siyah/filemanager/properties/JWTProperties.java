@@ -8,12 +8,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "file-record")
+@ConfigurationProperties(prefix = "jwt")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileRecordProperties {
-    private String path;
+public class JWTProperties {
+    private String secret;
+    private Long jwtExp;
+    private Long refreshExp;
 }
-
