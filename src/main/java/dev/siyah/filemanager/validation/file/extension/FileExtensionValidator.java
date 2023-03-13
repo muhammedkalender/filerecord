@@ -3,13 +3,16 @@ package dev.siyah.filemanager.validation.file.extension;
 import dev.siyah.filemanager.enums.FileExtension;
 import dev.siyah.filemanager.utility.FileUtility;
 import dev.siyah.filemanager.validation.ValidationAbstraction;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.Locale;
 
+@RequiredArgsConstructor
 public class FileExtensionValidator extends ValidationAbstraction<FileExtensionValidation, MultipartFile> {
+    private final FileUtility fileUtility;
     private FileExtension[] allowedExtensions = new FileExtension[]{};
 
     @Override
@@ -27,7 +30,7 @@ public class FileExtensionValidator extends ValidationAbstraction<FileExtensionV
             return true;
         }
 
-        String extension = FileUtility.getExtensionByFileName(multipartFile.getOriginalFilename())
+        String extension = this.fileUtility.getExtensionByFileName(multipartFile.getOriginalFilename())
                 .toUpperCase(Locale.ROOT);
 
         FileExtension fileExtension;
@@ -42,6 +45,10 @@ public class FileExtensionValidator extends ValidationAbstraction<FileExtensionV
     }
 
     private boolean checkFileExtension(FileExtension extension) {
+        if(this.allowedExtensions.length == 0){
+            return true;
+        }
+
         return Arrays.asList(this.allowedExtensions)
                 .contains(extension);
     }

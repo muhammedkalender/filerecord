@@ -27,7 +27,7 @@ public @interface FileSizeValidation {
      *
      * @implNote In this project default value set to 5
      */
-    int value() default 5;
+    long value() default 5;
 
     /**
      * Allowed file extensions (eg: png, jpeg, jpg, docx, pdf, xlsx) <br>

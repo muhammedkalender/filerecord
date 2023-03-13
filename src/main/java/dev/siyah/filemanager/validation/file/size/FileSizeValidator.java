@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.ConstraintValidatorContext;
 
 public class FileSizeValidator extends ValidationAbstraction<FileSizeValidation, MultipartFile> {
-    private int allowedMaxFileSize = 0;
+    private long allowedMaxFileSize = 0;
 
     @Override
     public void initialize(FileSizeValidation constraintAnnotation) {
@@ -23,7 +23,7 @@ public class FileSizeValidator extends ValidationAbstraction<FileSizeValidation,
             return true;
         }
 
-        return payload.getSize() / 1024 >= this.allowedMaxFileSize;
+        return payload.getSize() / 1024 <= this.allowedMaxFileSize;
     }
 }
 

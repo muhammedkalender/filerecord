@@ -1,6 +1,7 @@
 package dev.siyah.filemanager.utility;
 
 import dev.siyah.filemanager.exception.FileSaveException;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -10,20 +11,25 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
+@Component
 public class FileUtility {
+    public byte[] readByPath(String path) throws IOException {
+       return Files.readAllBytes(Paths.get(path));
+    }
+
     /**
      * @param filename String
      * @return String ( Fallback value is empty string )
      * @see <a href="https://www.baeldung.com/java-file-extension">Baeldung - How to Get the File Extension of a File in Java</a>
      */
-    public static String getExtensionByFileName(String filename) {
+    public String getExtensionByFileName(String filename) {
         return Optional.ofNullable(filename)
                 .filter(f -> f.contains("."))
                 .map(f -> f.substring(filename.lastIndexOf(".") + 1))
                 .orElse("");
     }
 
-    public static void saveMultipartAsFile(String path, MultipartFile file) throws IOException {
+    public void saveMultipartAsFile(String path, MultipartFile file) throws IOException {
         File saveFile = new File(path);
 
         if (!saveFile.getParentFile().exists()) {
@@ -37,7 +43,7 @@ public class FileUtility {
         file.transferTo(saveFile);
     }
 
-    public static boolean deleteFileIfExists(String path) {
+    public boolean deleteFileIfExists(String path) {
         try {
             Path fileToDeletePath = Paths.get(path);
             Files.delete(fileToDeletePath);
@@ -48,7 +54,7 @@ public class FileUtility {
         }
     }
 
-    public static boolean deleteFileParentIfExists(String path) {
+    public boolean deleteFileParentIfExists(String path) {
         try {
             Path fileToDeletePath = Paths.get(path);
             Path parent = fileToDeletePath.getParent();
@@ -62,7 +68,7 @@ public class FileUtility {
         }
     }
 
-    public static boolean move(String oldPath, String newPath) {
+    public boolean move(String oldPath, String newPath) {
         try {
             File oldFile = new File(oldPath);
             File newFile = new File(newPath);
